@@ -1,5 +1,3 @@
-karo:
-
 # 🚀 LearnSpace Backend API
 
 
