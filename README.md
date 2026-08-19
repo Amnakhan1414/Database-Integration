@@ -1,7 +1,6 @@
+karo:
+
 # 🚀 LearnSpace Backend API
-
-
-The API demonstrates how a backend server can:
 
 
 - Handle HTTP requests
@@ -21,11 +20,11 @@ The API demonstrates how a backend server can:
 - 🚀 Express.js backend server
 - 📚 GET endpoint for retrieving courses
 - ➕ POST endpoint for creating a new course
-- 📥 User input handling
+- 📥 JSON request handling
 - 📤 JSON response handling
-- ✅ Basic input validation
+- ✅ Input validation
 - ❌ Error handling for invalid input
-- 🔢 Appropriate HTTP status codes
+- 🔢 HTTP status codes
 - 🧪 API testing with Postman
 - 🌐 Browser-based GET response testing
 
@@ -39,7 +38,7 @@ The API demonstrates how a backend server can:
 | Technology | Purpose |
 |------------|---------|
 | Node.js | Backend runtime environment |
-| Express.js | Web framework for building the API |
+| Express.js | Web framework |
 | JavaScript | Server-side programming |
 | JSON | Data exchange format |
 | Postman | API testing |
@@ -58,15 +57,12 @@ decode-labs-project-2/
 ├── server.js
 ├── package.json
 ├── package-lock.json
-├── .gitignore
-└── screenshots/
-    ├──  Browser GET.png
-    ├── Get Success Postman.png,
-    ├── POST success.png
-    ├──  Invalid Title.png
-    └── Validation Empty Title.png
-
-⚙️ Installation & Setup
+├── Browser GET.png
+├── Get Success Postman.png
+├── Invalid Title.png
+├── POST success.png
+└── Validiation Empty Title.png
+⚙️ How to Run Locally
 1. Clone the repository
 git clone https://github.com/Amnakhan-gif/decode-labs-project-2.git
 2. Open the project folder
@@ -76,7 +72,7 @@ npm install
 4. Start the server
 node server.js
 
-The server will start at:
+The server runs on:
 
 http://localhost:3000
 🔗 API Endpoints
@@ -86,7 +82,7 @@ Endpoint:
 
 GET /api/courses
 
-Full URL:
+URL:
 
 http://localhost:3000/api/courses
 Example Response
@@ -111,16 +107,15 @@ Example Response
   ]
 }
 
-Status Code:
+Status Code: 200 OK
 
-200 OK
 🟢 POST — Create a New Course
 
 Endpoint:
 
 POST /api/courses
 
-Full URL:
+URL:
 
 http://localhost:3000/api/courses
 Request Body
@@ -139,20 +134,19 @@ Successful Response
   }
 }
 
-Status Code:
+Status Code: 201 Created
 
-201 Created
 ✅ Data Validation
 
-The API includes basic validation for incoming course data.
+The POST endpoint validates the incoming course data.
 
 Course Title
 
 The title:
 
 Must be provided
+Must be a string
 Must not be empty
-Must be a valid string
 Number of Lessons
 
 The lessons value:
@@ -160,7 +154,11 @@ The lessons value:
 Must be provided
 Must be a number
 Must be greater than 0
-❌ Validation Examples
+
+Invalid requests return:
+
+400 Bad Request
+❌ Validation Testing
 Empty Course Title
 {
   "title": "",
@@ -173,10 +171,6 @@ Response:
   "success": false,
   "message": "Course title is required and must be a valid text."
 }
-
-Status Code:
-
-400 Bad Request
 Invalid Number of Lessons
 {
   "title": "Node.js",
@@ -189,17 +183,13 @@ Response:
   "success": false,
   "message": "Lessons must be a number greater than 0."
 }
-
-Status Code:
-
-400 Bad Request
-Invalid Data Type
+Invalid Lessons Data Type
 {
   "title": "Node.js",
   "lessons": "fifteen"
 }
 
-The API rejects the request because lessons must be a number.
+The request is rejected because lessons must be a number.
 
 🧪 API Testing
 
@@ -209,35 +199,30 @@ Tests Performed
 ✅ GET request — 200 OK
 ✅ Successful POST request — 201 Created
 ✅ Empty course title validation — 400 Bad Request
-✅ Negative lessons validation — 400 Bad Request
-✅ Invalid lessons data type validation — 400 Bad Request
-✅ Empty request body validation — 400 Bad Request
+✅ Invalid lessons validation — 400 Bad Request
 ✅ Browser GET response tested successfully
-📸 Testing Screenshots
+📸 Testing Evidence
 
-Testing evidence is available in the screenshots folder.
+The repository includes screenshots of the completed tests:
 
-The screenshots demonstrate:
-
-GET API response
-POST API response
-Successful course creation
-Invalid input validation
-Error responses
-Browser JSON response
+Browser GET.png
+Get Success Postman.png
+POST success.png
+Invalid Title.png
+Validiation Empty Title.png
 🎯 Project Objectives
 
-This project was developed to practice and demonstrate:
+This project was developed to practice:
 
 Backend development
 REST API concepts
-Server-side logic
 HTTP methods
 Request and response handling
 JSON data handling
-Basic data validation
+Input validation
 HTTP status codes
 API testing with Postman
+Git and GitHub workflow
 📚 Learning Outcomes
 
 Through this project, I strengthened my understanding of:
@@ -264,7 +249,7 @@ Future versions of this API could include:
 🔎 Course search and filtering
 📊 Persistent course data
 🛡️ Advanced validation
-🌐 Deployment to a cloud platform
+🌐 Cloud deployment
 👩🏻‍💻 Author
 
 Amna Khan
