@@ -1,128 +1,110 @@
 # 🚀 LearnSpace Backend API
 
-
-- Handle HTTP requests
-- Return JSON responses
-- Accept user input
-- Create new course data
-- Validate incoming data
-- Return appropriate HTTP status codes
-
+This is my second project as a Full Stack Developer intern at DecodeLabs.  
+I built a RESTful API for the **LearnSpace** learning platform.
 
 ---
 
-
 ## ✨ Features
-
 
 - 🚀 Express.js backend server
 - 📚 GET endpoint for retrieving courses
 - ➕ POST endpoint for creating a new course
-- 📥 JSON request handling
-- 📤 JSON response handling
-- ✅ Input validation
+- 📥 User input handling
+- ✅ Basic input validation
 - ❌ Error handling for invalid input
-- 🔢 HTTP status codes
+- 🔢 Appropriate HTTP status codes
 - 🧪 API testing with Postman
-- 🌐 Browser-based GET response testing
-
 
 ---
 
-
 ## 🛠️ Technologies Used
-
 
 | Technology | Purpose |
 |------------|---------|
 | Node.js | Backend runtime environment |
-| Express.js | Web framework |
+| Express.js | Web framework for building the API |
 | JavaScript | Server-side programming |
 | JSON | Data exchange format |
 | Postman | API testing |
-| Git & GitHub | Version control and project hosting |
-
 
 ---
 
-
 ## 📂 Project Structure
 
-
-```text
+```
 decode-labs-project-2/
 │
 ├── server.js
 ├── package.json
 ├── package-lock.json
-├── Browser GET.png
-├── Get Success Postman.png
-├── Invalid Title.png
-├── POST success.png
-└── Validiation Empty Title.png
+├── .gitignore
+└── screenshots/
+    ├── Browser GET.png
+    ├── Get Success Postman.png
+    ├── POST success.png
+    ├── Invalid Title.png
+    └── Validation Empty Title.png
+```
 
-⚙️ How to Run Locally
-1. Clone the repository
+---
+
+## ⚙️ Installation & Setup
+
+```bash
+# Clone the repository
 git clone https://github.com/Amnakhan-gif/decode-labs-project-2.git
-2. Open the project folder
+
+# Open the project folder
 cd decode-labs-project-2
-3. Install dependencies
+
+# Install dependencies
 npm install
-4. Start the server
+
+# Start the server
 node server.js
+```
 
-The server runs on:
+The server will start at: `http://localhost:3000`
 
-http://localhost:3000
-🔗 API Endpoints
-🟢 GET — Get All Courses
+---
 
-Endpoint:
+## 🔗 API Endpoints
 
-GET /api/courses
+### 🟢 GET — Get All Courses
 
-URL:
+**Endpoint:** `GET /api/courses`
 
-http://localhost:3000/api/courses
-Example Response
+**Example Response:**
+```json
 {
   "success": true,
   "courses": [
-    {
-      "id": 1,
-      "title": "HTML & CSS",
-      "lessons": 12
-    },
-    {
-      "id": 2,
-      "title": "JavaScript",
-      "lessons": 18
-    },
-    {
-      "id": 3,
-      "title": "Node.js",
-      "lessons": 15
-    }
+    { "id": 1, "title": "HTML & CSS", "lessons": 12 },
+    { "id": 2, "title": "JavaScript", "lessons": 18 },
+    { "id": 3, "title": "Node.js", "lessons": 15 }
   ]
 }
+```
 
-Status Code: 200 OK
+**Status Code:** `200 OK`
 
-🟢 POST — Create a New Course
+---
 
-Endpoint:
+### 🟢 POST — Create a New Course
 
-POST /api/courses
+**Endpoint:** `POST /api/courses`
 
-URL:
-
-http://localhost:3000/api/courses
-Request Body
+**Request Body:**
+```json
 {
   "title": "React.js",
   "lessons": 20
 }
-Successful Response
+```
+
+**Successful Response:**
+```json
 {
   "success": true,
   "message": "Course created successfully!",
@@ -132,135 +114,173 @@ Successful Response
     "lessons": 20
   }
 }
+```
 
-Status Code: 201 Created
+**Status Code:** `201 Created`
 
-✅ Data Validation
+---
 
-The POST endpoint validates the incoming course data.
+## ✅ Data Validation
 
-Course Title
+### Course Title
+- Must be provided
+- Must not be empty
+- Must be a valid string
 
-The title:
+### Number of Lessons
+- Must be provided
+- Must be a number
+- Must be greater than 0
 
-Must be provided
-Must be a string
-Must not be empty
-Number of Lessons
+---
 
-The lessons value:
+## ❌ Validation Error Examples
 
-Must be provided
-Must be a number
-Must be greater than 0
+### 1. Empty Course Title
 
-Invalid requests return:
-
-400 Bad Request
-❌ Validation Testing
-Empty Course Title
+**Request:**
+```json
 {
   "title": "",
   "lessons": 15
 }
+```
 
-Response:
-
+**Response:**
+```json
 {
   "success": false,
   "message": "Course title is required and must be a valid text."
 }
-Invalid Number of Lessons
+```
+
+**Status Code:** `400 Bad Request`
+
+---
+
+### 2. Invalid Number of Lessons
+
+**Request:**
+```json
 {
   "title": "Node.js",
   "lessons": -5
 }
+```
 
-Response:
-
+**Response:**
+```json
 {
   "success": false,
   "message": "Lessons must be a number greater than 0."
 }
-Invalid Lessons Data Type
+```
+
+**Status Code:** `400 Bad Request`
+
+---
+
+### 3. Invalid Data Type for Lessons
+
+**Request:**
+```json
 {
   "title": "Node.js",
   "lessons": "fifteen"
 }
+```
 
-The request is rejected because lessons must be a number.
+**Response:**
+```json
+{
+  "success": false,
+  "message": "Lessons must be a number greater than 0."
+}
+```
 
-🧪 API Testing
+**Status Code:** `400 Bad Request`
+
+---
+
+## 🧪 API Testing
 
 The API was tested using Postman and a web browser.
 
-Tests Performed
-✅ GET request — 200 OK
-✅ Successful POST request — 201 Created
-✅ Empty course title validation — 400 Bad Request
-✅ Invalid lessons validation — 400 Bad Request
-✅ Browser GET response tested successfully
-📸 Testing Evidence
+| Test Case | Status |
+|-----------|--------|
+| GET /api/courses | ✅ 200 OK |
+| POST Valid Course | ✅ 201 Created |
+| POST Empty Title | ✅ 400 Bad Request |
+| POST Invalid Lessons | ✅ 400 Bad Request |
+| POST Invalid Data Type | ✅ 400 Bad Request |
 
-The repository includes screenshots of the completed tests:
+---
 
-Browser GET.png
-Get Success Postman.png
-POST success.png
-Invalid Title.png
-Validiation Empty Title.png
-🎯 Project Objectives
+## 📸 Testing Screenshots
 
-This project was developed to practice:
+Screenshots are available in the `screenshots/` folder:
 
-Backend development
-REST API concepts
-HTTP methods
-Request and response handling
-JSON data handling
-Input validation
-HTTP status codes
-API testing with Postman
-Git and GitHub workflow
-📚 Learning Outcomes
+| Test Case | Screenshot |
+|-----------|------------|
+| GET /api/courses (Browser) | `screenshots/Browser GET.png` |
+| GET /api/courses (Postman) | `screenshots/Get Success Postman.png` |
+| POST Valid Course | `screenshots/POST success.png` |
+| POST Invalid Title | `screenshots/Invalid Title.png` |
+| POST Empty Title | `screenshots/Validation Empty Title.png` |
 
-Through this project, I strengthened my understanding of:
+---
 
-Node.js
-Express.js
-RESTful APIs
-GET and POST requests
-JSON
-Request body handling
-Input validation
-Error handling
-HTTP status codes
-Postman API testing
-Git and GitHub workflow
-🚀 Future Improvements
+## 🎯 Project Objectives
 
-Future versions of this API could include:
+- Backend development with Node.js
+- REST API implementation
+- Server-side logic
+- HTTP methods (GET, POST)
+- Request and response handling
+- JSON data handling
+- Basic data validation
+- HTTP status codes
+- API testing with Postman
 
-🗄️ Database integration
-🔐 User authentication
-👤 User management
-📚 Full CRUD operations
-🔎 Course search and filtering
-📊 Persistent course data
-🛡️ Advanced validation
-🌐 Cloud deployment
-👩🏻‍💻 Author
+---
 
-Amna Khan
+## 📚 Learning Outcomes
 
-Full-Stack Developer | Web Developer | Software Builder
+- Node.js fundamentals
+- Express.js framework
+- RESTful API design
+- GET and POST requests
+- Request body handling
+- Input validation
+- Error handling
+- HTTP status codes
+- Postman API testing
+- Git and GitHub workflow
 
-🏢 Internship
+---
 
-This project was completed as Project 2 during my Full-Stack Development Internship at Decode Labs.
+## 🚀 Future Improvements
 
-The project provided hands-on experience in backend development, REST API implementation, server-side logic, input validation, API testing, and GitHub workflow.
+- 🗄️ Database integration
+- 🔐 User authentication
+- 👤 User management
+- 📚 Full CRUD operations
+- 🔎 Course search and filtering
+- 🛡️ Advanced validation
+- 🌐 Deployment to a cloud platform
 
-📄 License
+---
+
+## 👩🏻‍💻 Author
+
+**Amna Khan**  
+Full-Stack Developer Intern  
+DecodeLabs | Batch 2026
+
+---
+
+## 📄 License
 
 This project was created for educational and internship purposes.
+
+**DecodeLabs** | Greater Lucknow, India
