@@ -275,7 +275,7 @@ Screenshots are available in the `screenshots/` folder:
 
 **Amna Khan**  
 Full-Stack Developer Intern  
-DecodeLabs | Batch 2026
+DecodeLabs |  2026
 
 ---
 
@@ -283,4 +283,4 @@ DecodeLabs | Batch 2026
 
 This project was created for educational and internship purposes.
 
-**DecodeLabs** | Greater Lucknow, India
+
