@@ -60,6 +60,7 @@ decode-labs-project-2/
 ├── Invalid Title.png
 ├── POST success.png
 └── Validiation Empty Title.png
+
 ⚙️ How to Run Locally
 1. Clone the repository
 git clone https://github.com/Amnakhan-gif/decode-labs-project-2.git
