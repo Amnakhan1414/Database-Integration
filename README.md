@@ -1,152 +1,128 @@
-# 🚀 LearnSpace Backend API
+# LearnSpace Backend API — Database Integration
 
-This is my second project as a Full Stack Developer intern at DecodeLabs.  
-I built a RESTful API for the **LearnSpace** learning platform.
+A RESTful backend API for the LearnSpace learning platform, built with **Node.js**, **Express**, and **MongoDB (Mongoose)**. This project extends the Project 2 API by connecting it to a real, persistent database and adding full CRUD support.
+
+> Built as **Project 3 (Database Integration)** for the Full Stack Development Internship at Decode Labs.
+
+---
+
+## 📌 Overview
+
+Project 2 handled requests using an in-memory hardcoded array — data reset every time the server restarted. Project 3 solves that by connecting the API to **MongoDB Atlas** using **Mongoose**, so course data is now created, read, updated, and deleted permanently in a real database.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Node.js** — JavaScript runtime
+- **Express.js** — Web server & routing
+- **MongoDB Atlas** — Cloud NoSQL database
+- **Mongoose** — ODM (Object Data Modeling) for MongoDB
+- **dotenv** — Environment variable management
+- **Postman** — API testing
 
 ---
 
 ## ✨ Features
 
-- 🚀 Express.js backend server
-- 📚 GET endpoint for retrieving courses
-- ➕ POST endpoint for creating a new course
-- 📥 User input handling
-- ✅ Basic input validation
-- ❌ Error handling for invalid input
-- 🔢 Appropriate HTTP status codes
-- 🧪 API testing with Postman
+- Full **CRUD** support: Create, Read, Update, Delete
+- Database-backed persistence (MongoDB Atlas)
+- Schema-level validation using Mongoose
+- Route-level input validation (type checks, required fields)
+- Consistent JSON response format across all endpoints
+- Proper HTTP status codes (200, 201, 400, 404, 500)
+- Environment variables used for sensitive credentials (`.env`, git-ignored)
 
 ---
 
-## 🛠️ Technologies Used
+## 🗂️ Database Schema — `Course`
 
-| Technology | Purpose |
-|------------|---------|
-| Node.js | Backend runtime environment |
-| Express.js | Web framework for building the API |
-| JavaScript | Server-side programming |
-| JSON | Data exchange format |
-| Postman | API testing |
+| Field       | Type    | Rules                          |
+|-------------|---------|---------------------------------|
+| `title`     | String  | Required, trimmed               |
+| `lessons`   | Number  | Required, minimum value of 1    |
+| `createdAt` | Date    | Auto-generated (timestamps)     |
+| `updatedAt` | Date    | Auto-generated (timestamps)     |
 
----
-
-## 📂 Project Structure
-
-```
-decode-labs-project-2/
-│
-├── server.js
-├── package.json
-├── package-lock.json
-├── .gitignore
-└── screenshots/
-    ├── Browser GET.png
-    ├── Get Success Postman.png
-    ├── POST success.png
-    ├── Invalid Title.png
-    └── Validation Empty Title.png
+```javascript
+const courseSchema = new mongoose.Schema(
+  {
+    title: { type: String, required: true, trim: true },
+    lessons: { type: Number, required: true, min: 1 },
+  },
+  { timestamps: true }
+);
 ```
 
 ---
 
-## ⚙️ Installation & Setup
+## 📡 API Endpoints
 
-```bash
-# Clone the repository
-git clone https://github.com/Amnakhan-gif/decode-labs-project-2.git
+Base URL: `http://localhost:5000`
 
-# Open the project folder
-cd decode-labs-project-2
+### Home
 
-# Install dependencies
-npm install
-
-# Start the server
-node server.js
 ```
-
-The server will start at: `http://localhost:3000`
+GET /
+```
+Returns a simple status message confirming the API is running.
 
 ---
 
-## 🔗 API Endpoints
+### Get All Courses
 
-### 🟢 GET — Get All Courses
+```
+GET /api/courses
+```
 
-**Endpoint:** `GET /api/courses`
-
-**Example Response:**
+**Success Response — 200 OK**
 ```json
 {
   "success": true,
   "courses": [
-    { "id": 1, "title": "HTML & CSS", "lessons": 12 },
-    { "id": 2, "title": "JavaScript", "lessons": 18 },
-    { "id": 3, "title": "Node.js", "lessons": 15 }
+    {
+      "_id": "6a8828f00a68d094e9bc0d30",
+      "title": "HTML & CSS",
+      "lessons": 12,
+      "createdAt": "2026-08-21T10:31:12.979Z",
+      "updatedAt": "2026-08-21T10:31:12.979Z"
+    }
   ]
 }
 ```
 
-**Status Code:** `200 OK`
-
 ---
 
-### 🟢 POST — Create a New Course
+### Create a Course
 
-**Endpoint:** `POST /api/courses`
+```
+POST /api/courses
+```
 
-**Request Body:**
+**Request Body**
 ```json
 {
-  "title": "React.js",
-  "lessons": 20
+  "title": "JavaScript",
+  "lessons": 18
 }
 ```
 
-**Successful Response:**
+**Success Response — 201 Created**
 ```json
 {
   "success": true,
   "message": "Course created successfully!",
   "course": {
-    "id": 123456789,
-    "title": "React.js",
-    "lessons": 20
+    "_id": "6a8828f00a68d094e9bc0d31",
+    "title": "JavaScript",
+    "lessons": 18,
+    "createdAt": "2026-08-21T10:31:12.979Z",
+    "updatedAt": "2026-08-21T10:31:12.979Z"
   }
 }
 ```
 
-**Status Code:** `201 Created`
-
----
-
-## ✅ Data Validation
-
-### Course Title
-- Must be provided
-- Must not be empty
-- Must be a valid string
-
-### Number of Lessons
-- Must be provided
-- Must be a number
-- Must be greater than 0
-
----
-
-## ❌ Validation Error Examples
-
-### 1. Empty Course Title
-
-**Request:**
-```json
-{
-  "title": "",
-  "lessons": 15
-}
-```
-
-**Response:**
+**Validation Error — 400 Bad Request**
 ```json
 {
   "success": false,
@@ -154,133 +130,137 @@ The server will start at: `http://localhost:3000`
 }
 ```
 
-**Status Code:** `400 Bad Request`
-
 ---
 
-### 2. Invalid Number of Lessons
+### Update a Course
 
-**Request:**
+```
+PUT /api/courses/:id
+```
+
+**Request Body**
 ```json
 {
-  "title": "Node.js",
-  "lessons": -5
+  "title": "JavaScript",
+  "lessons": 20
 }
 ```
 
-**Response:**
+**Success Response — 200 OK**
 ```json
 {
-  "success": false,
-  "message": "Lessons must be a number greater than 0."
+  "success": true,
+  "message": "Course updated successfully!",
+  "course": {
+    "_id": "6a8828f00a68d094e9bc0d31",
+    "title": "JavaScript",
+    "lessons": 20,
+    "updatedAt": "2026-08-21T10:35:18.669Z"
+  }
 }
 ```
 
-**Status Code:** `400 Bad Request`
-
----
-
-### 3. Invalid Data Type for Lessons
-
-**Request:**
-```json
-{
-  "title": "Node.js",
-  "lessons": "fifteen"
-}
-```
-
-**Response:**
+**Not Found — 404**
 ```json
 {
   "success": false,
-  "message": "Lessons must be a number greater than 0."
+  "message": "Course not found"
 }
 ```
 
-**Status Code:** `400 Bad Request`
+---
+
+### Delete a Course
+
+```
+DELETE /api/courses/:id
+```
+
+**Success Response — 200 OK**
+```json
+{
+  "success": true,
+  "message": "Course deleted successfully!",
+  "course": {
+    "_id": "6a8828f00a68d094e9bc0d31",
+    "title": "JavaScript",
+    "lessons": 20
+  }
+}
+```
+
+**Not Found — 404**
+```json
+{
+  "success": false,
+  "message": "Course not found"
+}
+```
 
 ---
 
-## 🧪 API Testing
+## 🧪 Testing Summary
 
-The API was tested using Postman and a web browser.
+| Method | Endpoint             | Test Case                  | Expected Status |
+|--------|-----------------------|-----------------------------|------------------|
+| GET    | `/api/courses`         | Fetch all courses           | 200              |
+| POST   | `/api/courses`         | Create with valid data      | 201              |
+| POST   | `/api/courses`         | Create with missing title   | 400              |
+| PUT    | `/api/courses/:id`      | Update existing course      | 200              |
+| PUT    | `/api/courses/:id`      | Update non-existing course  | 404              |
+| DELETE | `/api/courses/:id`      | Delete existing course      | 200              |
+| DELETE | `/api/courses/:id`      | Delete non-existing course  | 404              |
 
-| Test Case | Status |
-|-----------|--------|
-| GET /api/courses | ✅ 200 OK |
-| POST Valid Course | ✅ 201 Created |
-| POST Empty Title | ✅ 400 Bad Request |
-| POST Invalid Lessons | ✅ 400 Bad Request |
-| POST Invalid Data Type | ✅ 400 Bad Request |
-
----
-
-## 📸 Testing Screenshots
-
-Screenshots are available in the `screenshots/` folder:
-
-| Test Case | Screenshot |
-|-----------|------------|
-| GET /api/courses (Browser) | `screenshots/Browser GET.png` |
-| GET /api/courses (Postman) | `screenshots/Get Success Postman.png` |
-| POST Valid Course | `screenshots/POST success.png` |
-| POST Invalid Title | `screenshots/Invalid Title.png` |
-| POST Empty Title | `screenshots/Validation Empty Title.png` |
+All endpoints tested using **Postman**. Screenshots available in the repository (`CREATE.png`, `READ.png`, `PUT.png`, `DELETE.png`, `Final Verification.png`).
 
 ---
 
-## 🎯 Project Objectives
+## ⚙️ Setup & Installation
 
-- Backend development with Node.js
-- REST API implementation
-- Server-side logic
-- HTTP methods (GET, POST)
-- Request and response handling
-- JSON data handling
-- Basic data validation
-- HTTP status codes
-- API testing with Postman
+```bash
+# Clone the repository
+git clone https://github.com/Amnakhan1414/Database-Integration.git
+cd Database-Integration
 
----
+# Install dependencies
+npm install
 
-## 📚 Learning Outcomes
+# Create a .env file in the root directory
+MONGODB_URI=your_mongodb_connection_string
+PORT=5000
 
-- Node.js fundamentals
-- Express.js framework
-- RESTful API design
-- GET and POST requests
-- Request body handling
-- Input validation
-- Error handling
-- HTTP status codes
-- Postman API testing
-- Git and GitHub workflow
+# Start the server
+node server.js
+```
+
+> ⚠️ The `.env` file is not included in this repository (see `.gitignore`). You'll need your own MongoDB Atlas connection string to run this project locally.
 
 ---
 
-## 🚀 Future Improvements
+## 🔒 Security Notes
 
-- 🗄️ Database integration
-- 🔐 User authentication
-- 👤 User management
-- 📚 Full CRUD operations
-- 🔎 Course search and filtering
-- 🛡️ Advanced validation
-- 🌐 Deployment to a cloud platform
+- Database credentials are stored in environment variables, never hardcoded
+- `.env` is excluded from version control via `.gitignore`
+- Input is validated both at the route level and the schema level (Mongoose), following the principle that **the database should never blindly trust application logic**
 
 ---
 
-## 👩🏻‍💻 Author
+## 📚 What This Project Demonstrates
 
-**Amna Khan**  
-Full-Stack Developer Intern  
-DecodeLabs |  2026
+- Designing a database schema with appropriate types and constraints
+- Connecting a Node.js/Express backend to MongoDB using Mongoose
+- Implementing full CRUD operations mapped to REST conventions (GET, POST, PUT, DELETE)
+- Handling errors gracefully at both the validation and database level
+- Managing environment variables and credentials securely
 
 ---
 
-## 📄 License
+## 👤 Author
 
-This project was created for educational and internship purposes.
+**Amna Khan**
+Full Stack Development Intern @ Decode Labs
+BSIT, National University of Technology (NUTECH), Islamabad
 
+---
 
+*Part of the Decode Labs Full Stack Development Internship — Project 3: Database Integration*
