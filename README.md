@@ -259,7 +259,6 @@ node server.js
 
 **Amna Khan**
 Full Stack Development Intern @ Decode Labs
-BSIT, National University of Technology (NUTECH), Islamabad
 
 ---
 
